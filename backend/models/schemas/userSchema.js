@@ -37,9 +37,9 @@ const login = async (body) => {
   if (!user || !user.validPassword(password)) {
     return false;
   }
-  const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1m" });
+  const token = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
   const refreshToken = jwt.sign({ id: user._id }, REFRESH_TOKEN_SECRET, {
-    expiresIn: "2m",
+    expiresIn: "7d",
   });
   user.token = token;
   user.refreshToken = refreshToken;
@@ -77,19 +77,23 @@ const logout = async (body) => {
 };
 
 const refreshTokenSchema = async (refreshToken) => {
-  const decoded = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET);
-  const user = await User.findById(decoded.id);
-  if (!user || user.refreshToken !== refreshToken) {
+  try {
+    const decoded = jwt.verify(refreshToken, REFRESH_TOKEN_SECRET);
+    const user = await User.findById(decoded.id);
+    if (!user || user.refreshToken !== refreshToken) {
+      return false;
+    }
+    const blacklisted = await BlacklistedToken.findOne({ token: refreshToken, type: "refresh" });
+    if (blacklisted) {
+      return false;
+    }
+    const newToken = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1m" });
+    user.token = newToken;
+    await user.save();
+    return { token: newToken };
+  } catch (error) {
     return false;
   }
-  const blacklisted = await BlacklistedToken.findOne({ token: refreshToken, type: "refresh" });
-  if (blacklisted) {
-    return false;;
-  }
-  const newToken = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1m" });
-  user.token = newToken;
-  await user.save();
-  return { token: newToken };
 };
 
 module.exports = {
