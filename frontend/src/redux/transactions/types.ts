@@ -8,6 +8,26 @@ export interface Transaction {
   userId: string;
 }
 
+// Add these API response types
+export interface ApiResponse<T> {
+  status: string;
+  code: number;
+  data: T;
+}
+
+export interface TransactionResponse {
+  transaction: Transaction;
+}
+
+export interface TransactionsListResponse {
+  transactions: Transaction[];
+}
+
+export interface EditTransactionResponse {
+  updatedTransaction: Transaction;
+  oldTransaction: Transaction;
+}
+
 export interface FetchTransactionsParams {
   page?: number;
   limit?: number;

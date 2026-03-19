@@ -1,6 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { loginUser, registerUser } from "./userThunks";
-import { InitialUser } from "./types";
+import { InitialUser, User } from "./types";
 
 const initialState: InitialUser = {
     isAuth: false,
@@ -16,30 +16,30 @@ export const sessionSlice = createSlice({
   name: "session",
   initialState,
   reducers: {
-    setIsAuth(state, action) {
+    setIsAuth(state, action: PayloadAction<boolean>) {
       state.isAuth = action.payload;
     },
-    setUser(state, action) {
+    setUser(state, action: PayloadAction<User | null>) {
       state.user = action.payload;
     },
-    setLoading(state, action) {
+    setLoading(state, action: PayloadAction<boolean>) {
       state.loading = action.payload;
     },
-    setError(state, action) {
+    setError(state, action: PayloadAction<string | unknown | null>) {
       state.error = action.payload;
     },
-    setToken(state, action) {
+    setToken(state, action: PayloadAction<string | null>) {
       state.token = action.payload;
-      localStorage.setItem("token", action.payload);
+      localStorage.setItem("token", action.payload? action.payload : "");
     },
-    setRefreshToken(state, action) {
+    setRefreshToken(state, action: PayloadAction<string | null>) {
       state.refreshToken = action.payload;
-      localStorage.setItem("refreshToken", action.payload);
+      localStorage.setItem("refreshToken", action.payload ? action.payload : "");
     },
-    setBalance(state, action) {
+    setBalance(state, action: PayloadAction<number>) {
       state.balance = action.payload;
     },
-    editBalance(state, action) {
+    editBalance(state, action: PayloadAction<{ oldamount: number; newamount: number; type: "income" | "expense" }>) {
       const { oldamount, newamount, type } = action.payload;
       if (type === "income") {
         state.balance = state.balance - oldamount + newamount;
@@ -47,7 +47,7 @@ export const sessionSlice = createSlice({
         state.balance = state.balance + oldamount - newamount;
       }
     },
-    changeBalance(state, action) {
+    changeBalance(state, action: PayloadAction<{ amount: number; type: "plus" | "minus" }>) {
       const { amount, type } = action.payload;
       if (type === "plus") {
         state.balance += amount;
@@ -64,7 +64,6 @@ export const sessionSlice = createSlice({
       state.user = null;
       state.balance = 0;
       
-      // Clear localStorage
       localStorage.removeItem("token");
       localStorage.removeItem("refreshToken");
     },
@@ -100,6 +99,7 @@ export const sessionSlice = createSlice({
         localStorage.removeItem("token");
         localStorage.removeItem("refreshToken");
       })
+
       // Login User
       .addCase(loginUser.pending, (state) => {
         state.loading = true;
