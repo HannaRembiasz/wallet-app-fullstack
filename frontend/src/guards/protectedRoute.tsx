@@ -1,10 +1,16 @@
+import React from "react";
 import { useSelector } from "react-redux";
 import { Navigate } from "react-router-dom";
 import ClipLoader from "react-spinners/ClipLoader";
+import { RootState } from "../redux/store";
 
-const ProtectedRoute = ({ children }) => {
+interface ProtectedRouteProps {
+  children: React.ReactNode;
+}
+
+const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ children }) => {
   const { isAuth, loading } = useSelector(
-    (state) => state.session
+    (state: RootState) => state.session
   );
 
   if (loading) {
@@ -19,7 +25,7 @@ const ProtectedRoute = ({ children }) => {
     return <Navigate to="/login" replace />;
   }
 
-  return children;
+  return <>{children}</>;
 };
 
 export default ProtectedRoute;

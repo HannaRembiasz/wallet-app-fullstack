@@ -1,4 +1,4 @@
-export const COLORS = [
+export const COLORS: readonly string[] = [
   "#00AD84",
   "#24CCA7",
   "#81E1FF",
@@ -10,16 +10,16 @@ export const COLORS = [
   "#FED057",
 ];
 
-export const monthOptions = [
+export const monthOptions: readonly string[] = [
   "January", "February", "March", "April", "May", "June",
   "July", "August", "September", "October", "November", "December",
 ];
 
-export const yearOptions = [
+export const yearOptions: readonly string[] = [
   "2020", "2021", "2022", "2023", "2024", "2025", "2026",
 ];
 
-export const categoryOptions = [
+export const categoryOptions: readonly string[] = [
   "Main expenses",
   "Products",
   "Car",
