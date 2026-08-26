@@ -9,6 +9,7 @@ const checkBlacklist = require("../backend/middlewares/tokenBlacklist.js");
 const userRoutes = require("../backend/routes/userRoutes.js");
 const swaggerUi = require("swagger-ui-express");
 const swaggerSpec = require("./swaggerConfig");
+const seedDemoData = require("./seedDemoData");
 
 const app = express();
 
