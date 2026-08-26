@@ -35,6 +35,30 @@ app.use(express.json());
 
 app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
 
+app.get("/api/seed-demo", async (req, res) => {
+  const authHeader = req.headers.authorization;
+
+  if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
+    return res.status(401).json({
+      message: "Unauthorized",
+    });
+  }
+
+  try {
+    await seedDemoData();
+
+    return res.status(200).json({
+      message: "Demo data refreshed successfully",
+    });
+  } catch (error) {
+    console.error("Demo seed error:", error);
+
+    return res.status(500).json({
+      message: "Failed to refresh demo data",
+    });
+  }
+});
+
 app.use("/", userRoutes);
 app.use("/", checkBlacklist, transactionRoutes);
 app.use("/", checkBlacklist, statisticsRoutes);

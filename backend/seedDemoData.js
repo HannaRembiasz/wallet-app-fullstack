@@ -1,11 +1,10 @@
-require("dotenv").config();
 const mongoose = require("mongoose");
 const bcrypt = require("bcrypt");
 const { faker } = require("@faker-js/faker");
 
-const User = require("../backend/models/User");
-const Transaction = require("../backend/models/Transaction");
-const {categories} = require("../backend/constants/constants");
+const User = require("./models/User");
+const Transaction = require("./models/Transaction");
+const { categories } = require("./constants/constants");
 
 async function seedDemoData() {
   try {
@@ -14,14 +13,18 @@ async function seedDemoData() {
     console.log("Connected to MongoDB ✅");
 
     const demoEmail = "demo@example.com";
+
     const demoUser = await User.findOne({ email: demoEmail });
+
     if (demoUser) {
       await Transaction.deleteMany({ userId: demoUser._id });
       await User.deleteOne({ _id: demoUser._id });
+
       console.log("Old demo data removed");
     }
 
     const hashedPassword = await bcrypt.hash("password123", 10);
+
     const newDemoUser = await User.create({
       name: "Demo User",
       email: demoEmail,
@@ -30,12 +33,15 @@ async function seedDemoData() {
 
     console.log("Demo user created");
 
-    let transactions = [];
+    const transactions = [];
+
     let totalIncome = 0;
     let totalExpense = 0;
+
     for (let i = 0; i < 35; i++) {
       const type = faker.helpers.arrayElement(["income", "expense"]);
       const amount = parseFloat(faker.finance.amount(5, 500, 2));
+
       transactions.push({
         userId: newDemoUser._id,
         type,
@@ -52,8 +58,11 @@ async function seedDemoData() {
           ),
           to: new Date(),
         }),
-        comment: faker.lorem.words({ min: 1, max: 3 }).slice(0, 15),
+        comment: faker.lorem
+          .words({ min: 1, max: 3 })
+          .slice(0, 15),
       });
+
       if (type === "income") {
         totalIncome += amount;
       } else {
@@ -62,20 +71,22 @@ async function seedDemoData() {
     }
 
     await Transaction.insertMany(transactions);
+
     console.log("Fake transactions added");
 
     const balance = totalIncome - totalExpense;
 
     newDemoUser.balance = balance;
-    await newDemoUser.save();
-    console.log("Demo user balance updated");
 
+    await newDemoUser.save();
+
+    console.log("Demo user balance updated");
     console.log("✅ Demo data seeding complete!");
-    process.exit();
-  } catch (err) {
-    console.error(err);
-    process.exit(1);
+
+  } catch (error) {
+    console.error("Seeding error:", error);
+    throw error;
   }
 }
 
-seedDemoData();
+module.exports = seedDemoData;
