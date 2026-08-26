@@ -1,8 +1,8 @@
 import css from "./Balance.module.css";
-import {useSelector} from "react-redux";
+import { useAppSelector } from "../../redux/hooks";
 
-const Balance = () => {
-  const amount = useSelector((state) => state.session.balance).toFixed(2);
+const Balance: React.FC = () => {
+  const amount = useAppSelector((state) => state.session.balance).toFixed(2);
   return (
     <div className={css.container}>
       <h4 className={css.title}>your balance</h4>

@@ -2,7 +2,8 @@ import css from "./CashflowList.module.css";
 import TransactionForm from "../Transaction/Transaction";
 import DeleteModal from "../Modal/DeleteModal";
 import { useState, useEffect, useRef } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useAppDispatch, useAppSelector } from "../../redux/hooks";
+
 import {
   fetchTransactions,
   deleteTransaction,
@@ -16,42 +17,43 @@ import {
 import { format } from "date-fns";
 import ClipLoader from "react-spinners/ClipLoader";
 
-const CashflowList = () => {
-  const dispatch = useDispatch();
-  const userId = useSelector((state) => state.session.user.id);
-  const { transactions, loading, currentPage, hasMore, transactionId } =
-    useSelector((state) => state.transaction);
+const CashflowList: React.FC = () => {
+  const dispatch = useAppDispatch();
+  const userId: string = useAppSelector((state) => state.session.user.id ? state.session.user.id : "");
 
-  const [type, setType] = useState();
-  const [showEditTransaction, setShowEditTransaction] = useState(false);
+  const { transactions, loading, currentPage, hasMore, transactionId } =
+    useAppSelector((state) => state.transaction);
+
+  const [type, setType] = useState<string | null>(null);
+  const [showEditTransaction, setShowEditTransaction] = useState<boolean>(false);
 
   const deleteDialogRef = useRef(null);
 
-  const formatDate = (date) => format(new Date(date), "dd.MM.yy");
+  const formatDate = (date: string) => format(new Date(date), "dd.MM.yy");
 
-  const handleEditClick = (id, transactionType) => {
+  const handleEditClick = (id, transactionType): void => {
     setType(transactionType);
     dispatch(setTransactionId(id));
     setShowEditTransaction(true);
   };
 
-  const handleCloseEdit = () => {
-    setType();
+  const handleCloseEdit = (): void => {
+    setType(null);
     dispatch(setTransactionId(null));
     setShowEditTransaction(false);
   };
 
-  const handleDeleteClick = (id) => {
+  const handleDeleteClick = (id: string): void => {
     dispatch(setTransactionId(id));
     deleteDialogRef.current.showModal();
   };
 
-  const handleCancelDelete = () => {
+  const handleCancelDelete = (): void => {
     dispatch(setTransactionId(null));
     deleteDialogRef.current.close();
   };
 
-  const handleConfirmDelete = async () => {
+  const handleConfirmDelete = async (): Promise<void> => {
     dispatch(deleteTransaction({ id: transactionId, userId }));
     deleteDialogRef.current.close();
   };
@@ -64,7 +66,7 @@ const CashflowList = () => {
   }, [dispatch, userId]);
 
   useEffect(() => {
-    const handleScroll = () => {
+    const handleScroll = (): void => {
       if (
         window.innerHeight + document.documentElement.scrollTop >=
         document.documentElement.offsetHeight - 100
