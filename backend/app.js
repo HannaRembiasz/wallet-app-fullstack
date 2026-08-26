@@ -1,4 +1,4 @@
-require('dotenv').config();
+require("dotenv").config();
 
 const express = require("express");
 const cors = require("cors");
@@ -14,7 +14,7 @@ const app = express();
 
 const allowedOrigins = [
   "http://localhost:3000",
-  "https://wallet-app-project.netlify.app"
+  "https://wallet-app-project.netlify.app",
 ];
 
 app.use(
@@ -28,7 +28,7 @@ app.use(
     },
     methods: ["GET", "POST", "PUT", "DELETE"],
     allowedHeaders: ["Content-Type", "Authorization"],
-  })
+  }),
 );
 
 app.use(express.json());
@@ -55,6 +55,8 @@ app.get("/api/seed-demo", async (req, res) => {
 
     return res.status(500).json({
       message: "Failed to refresh demo data",
+      error: error.message,
+      stack: error.stack,
     });
   }
 });
@@ -68,8 +70,7 @@ app.get("/", (req, res) => {
 });
 
 app.use((req, res) => {
-  res.status(404).json({ message: 'Not found' })
-})
-
+  res.status(404).json({ message: "Not found" });
+});
 
 module.exports = app;
