@@ -9,7 +9,7 @@ A full-stack web application for managing personal finances with transaction tra
 **🚀 [Try the Live App](https://wallet-app-project.netlify.app)**
 
 - **Frontend**: Deployed on Netlify
-- **Backend**: Deployed on Heroku
+- **Backend**: Deployed on Vercel
 - **Demo Account**: Click "Try Demo" or use `demo@example.com` / `password123`
 
 ---
@@ -45,6 +45,7 @@ A full-stack web application for managing personal finances with transaction tra
 - **Swagger** for API documentation
 - **CORS** enabled
 - **Token blacklisting** for security
+- **Vercel** for deployment
 
 ## 📁 Project Structure
 
@@ -77,8 +78,8 @@ WalletApp-react-node/
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/your-username/WalletApp-react-node.git
-   cd WalletApp-react-node
+   git clone https://github.com/HannaRembiasz/wallet-app-fullstack.git
+   cd wallet-app-fullstack
    ```
 
 2. **Backend Setup**
@@ -92,6 +93,7 @@ WalletApp-react-node/
    MONGODB_URI=your_mongodb_connection_string
    JWT_SECRET=your_jwt_secret
    REFRESH_TOKEN_SECRET=your_refresh_token_secret
+   CRON_SECRET=your_cron_secret
    PORT=3001
    ```
 
@@ -128,11 +130,6 @@ WalletApp-react-node/
    ```
    App runs on http://localhost:3000
 
-3. **Seed Demo Data (Optional)**
-   ```bash
-   cd backend
-   npm run seed-demo
-   ```
 
 ## 📚 API Documentation
 
@@ -144,13 +141,17 @@ The app uses JWT tokens with refresh token rotation:
 - **Access tokens**: Short-lived (1 hour)
 - **Refresh tokens**: Long-lived (7 days)
 - **Token blacklisting**: For secure logout
-- **Automatic token refresh**: Seamless user experience
+- **Automatic token refresh**: Keeps users authenticated without unnecessary logins
 
 ## 🎨 Demo Account
+
+You can try the application without creating an account.
 
 Try the app with the demo account:
 - Click "Try Demo" on the login page
 - Or use: `demo@example.com` / `password123`
+
+Demo transactions are automatically generated in the backend seed mechanism.
 
 ## 📱 Responsive Design
 
@@ -163,41 +164,40 @@ The app is fully responsive with breakpoints:
 
 ### Live Deployment
 - **Frontend**: [View live app](https://wallet-app-project.netlify.app)
-- **Backend API**: [View backend API](https://wallet-project-app-195afaf0a0a1.herokuapp.com/)
-- **API Documentation**: [View API documentation](https://wallet-project-app-195afaf0a0a1.herokuapp.com/api-docs/)
+- **Backend API**: [View backend API](https://wallet-app-fullstack.vercel.app/)
+- **API Documentation**: [View API documentation](https://wallet-app-fullstack.vercel.app/api-docs/)
 
 ### Deploy Your Own Instance
 
-#### Backend (Heroku)
+#### Backend (Vercel)
 ```bash
 cd backend
-git init
-heroku create your-app-name
-git add .
-git commit -m "Deploy backend"
-git push heroku main
+vercel login
+vercel
+vercel --prod
 ```
 
-Set environment variables on Heroku:
+Set environment variables on Vercel:
 ```bash
-heroku config:set MONGODB_URI=your_mongodb_uri
-heroku config:set JWT_SECRET=your_jwt_secret
-heroku config:set REFRESH_TOKEN_SECRET=your_refresh_secret
-heroku config:set REFRESH_TOKEN_SECRET=your_refresh_token_secret
-heroku config:set SWAGGER_SERVER_URL=https://your-heroku-app-name.herokuapp.com
+MONGODB_URI=your_mongodb_uri
+JWT_SECRET=your_jwt_secret
+REFRESH_TOKEN_SECRET=your_refresh_token_secret
+CRON_SECRET=your_cron_secret
+SWAGGER_SERVER_URL=https://your-vercel-app-name.vercel.app
 ```
 
 #### Frontend (Netlify)
 1. Build the project:
    ```bash
    cd frontend
+   npm install
    npm run build
    ```
 2. Drag the `build` folder to [Netlify Drop](https://app.netlify.com/drop)
 3. Or connect your GitHub repository for automatic deployments
 
 Set environment variables in Netlify:
-- `REACT_APP_API_URL=https://your-heroku-app-name.herokuapp.com`
+- `REACT_APP_API_URL=https://your-vercel-app-name.vercel.com`
 - `REACT_APP_OPEN_EXCHANGE_API_KEY=your_api_key`
 
 ## 🧪 Available Scripts
@@ -205,19 +205,10 @@ Set environment variables in Netlify:
 ### Backend
 - `npm start` - Start production server
 - `npm run dev` - Start development server with nodemon
-- `npm run seed-demo` - Seed database with demo data
 
 ### Frontend
 - `npm start` - Start development server
 - `npm run build` - Build for production
-
-## 🤝 Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
 
 ## 📄 License
 
@@ -225,6 +216,8 @@ This project is licensed under the MIT License.
 
 ## 👥 Author
 
-Hanna Kaczyńska - [hanna.kaczynska.dev@gmail.com](mailto:hanna.kaczynska.dev@gmail.com)
+Hanna Rembiasz - [hannarembiasz@gmail.com](mailto:hannarembiasz@gmail.com)
 
-Project Link: [Source code](https://github.com/hannakaczynska/wallet-app-fullstack)
+LinkedIn Profile: [Hanna Rembiasz](https://www.linkedin.com/in/hanna-rembiasz/)
+
+Project Link: [Source code](https://github.com/HannaRembiasz/wallet-app-fullstack)
