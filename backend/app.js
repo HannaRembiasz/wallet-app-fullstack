@@ -34,7 +34,17 @@ app.use(
 
 app.use(express.json());
 
-app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerSpec));
+app.use(
+  "/api-docs",
+  swaggerUi.serve,
+  swaggerUi.setup(swaggerSpec, {
+    customCssUrl: "https://unpkg.com/swagger-ui-dist/swagger-ui.css",
+    customJs: [
+      "https://unpkg.com/swagger-ui-dist/swagger-ui-bundle.js",
+      "https://unpkg.com/swagger-ui-dist/swagger-ui-standalone-preset.js",
+    ],
+  })
+);
 
 app.get("/api/seed-demo", async (req, res) => {
   const authHeader = req.headers.authorization;
