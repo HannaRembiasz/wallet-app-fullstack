@@ -12,7 +12,7 @@ The application also includes JWT-based authentication, currency exchange rates,
 
 ## 🌐 Live Demo
 
-**🚀 [Try the Live App](https://wallet-app-project.netlify.app)**
+**🚀 [Try the Live App](https://wallet-app-project.netlify.app/login)**
 
 - **Frontend:** Deployed on Netlify
 - **Backend:** Deployed on Vercel
@@ -236,7 +236,7 @@ The application supports mobile, tablet, and desktop screen sizes.
 
 ### Live Deployment
 
-- **Frontend:** [View Live App](https://wallet-app-project.netlify.app)
+- **Frontend:** [View Live App](https://wallet-app-project.netlify.app/login)
 - **Backend API:** [View Backend API](https://wallet-app-fullstack.vercel.app/)
 - **API Documentation:** [View Swagger Docs](https://wallet-app-fullstack.vercel.app/api-docs/)
 
