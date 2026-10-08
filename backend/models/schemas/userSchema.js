@@ -87,7 +87,7 @@ const refreshTokenSchema = async (refreshToken) => {
     if (blacklisted) {
       return false;
     }
-    const newToken = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1m" });
+    const newToken = jwt.sign({ id: user._id }, JWT_SECRET, { expiresIn: "1h" });
     user.token = newToken;
     await user.save();
     return { token: newToken };
